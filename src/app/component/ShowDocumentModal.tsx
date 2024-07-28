@@ -1,6 +1,5 @@
 import React from "react";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-
 export default function ShowDocumentModal({fileName} : {fileName : string}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const onlyFileName  = fileName.split("-").pop()
@@ -21,9 +20,10 @@ export default function ShowDocumentModal({fileName} : {fileName : string}) {
               <ModalBody className="overflow-auto">
               {
                   isImage ? (
-                    <img src={`/${fileName}`} alt={onlyFileName} className="block m-auto bord  er-solid border-2 border-red-600" />
+                  
+                    <img  src={`/uploads/${fileName}`} alt={onlyFileName  || "rien n'est specifié"} className="block m-auto " />
                   ) : (
-                    <iframe className="w-full h-screen border-none" src={`/${fileName}`} title={onlyFileName}></iframe>
+                    <iframe  className="w-full h-screen border-none" src={`/uploads/${fileName}`} title={onlyFileName}></iframe>
                   )
                 }              </ModalBody>
               <ModalFooter>

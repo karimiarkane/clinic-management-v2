@@ -221,7 +221,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                 <CardBody>
                   <div className="patientDocument  mb-2">
                     <h2 className="text-center text-lg font-semibold text-gray-700 border-b-2 mb-3">
-                      Docier Medicale : {patient.patientHistoryDocuments.length}{" "}
+                      Dossier Medicale : {patient.patientHistoryDocuments.length}{" "}
                       document
                     </h2>
 

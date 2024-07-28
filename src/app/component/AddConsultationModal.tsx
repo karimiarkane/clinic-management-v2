@@ -190,7 +190,7 @@ export default function AddConsultationModal({patient} : any) {
 {/* document */}
                       <div className="py-3 flex gap-x-4 items-center">
                         <label htmlFor="consultationDocuments" className="text-gray-600">
-                          Docier de Consultation :
+                          Dossier de Consultation :
                         </label>
                         <input
                           type="file"

@@ -13,14 +13,8 @@ export async function DELETE(request: NextRequest){
     try {
         const { consultationId, documentName } = await request.json();
         await connectDb();
-        console.log('consultationId ' , consultationId)
-        console.log('documentName ' , documentName)
-        // const patient = await Patient.findOne({_id : patientId})
-        // if(!patient){
-        //     return NextResponse.json({status : 404, message : 'patient non trouvé'})
-        //   }          
-          const path = join("public", documentName);
-          console.log("path to delete", path)
+      
+          const path = join("uploads", documentName);
           await unlink(path).catch(console.error);
 
           await Consultation.updateOne(
@@ -93,16 +87,8 @@ export async function POST(request: NextRequest) {
         const uniqueFileName = `${fullNamePatient}-consult-${StartNewFileOrder}-${file.name}`;
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        const path = join("public", uniqueFileName);
-        await writeFile(path, buffer);
-    //     const path = join("public", uniqueFileName);
-    //     const fileUrl = URL.createObjectURL(file);
-    //     console.log("fileUrl" , fileUrl)
-    //     const readStream = createReadStream(fileUrl);
-    //     console.log("readStream", readStream)
-    //    const writeStream = createWriteStream(path);
-    //      console.log("writeStream", writeStream)
-    // await pipeline(readStream, writeStream);    
+        const path = join("uploads", uniqueFileName);
+        await writeFile(path, buffer  as unknown as Uint8Array);
         fileNames.push(uniqueFileName);
         StartNewFileOrder++;
     }

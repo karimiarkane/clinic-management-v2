@@ -57,8 +57,8 @@ export async function POST(request: NextRequest) {
         const uniqueFileName = `${fullNamePatient}-${StartNewFileOrder}-${file.name}`;
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
-        const path = join("public", uniqueFileName);
-        await writeFile(path, buffer);
+        const path = join("uploads", uniqueFileName);
+        await writeFile(path, buffer  as unknown as Uint8Array);
     //     const path = join("public", uniqueFileName);
     //     const fileUrl = URL.createObjectURL(file);
     //     console.log("fileUrl" , fileUrl)
@@ -96,7 +96,7 @@ export async function DELETE(request: NextRequest){
         // if(!patient){
         //     return NextResponse.json({status : 404, message : 'patient non trouvé'})
         //   }          
-          const path = join("public", documentName);
+          const path = join("uploads", documentName);
           console.log("path to delete", path)
           await unlink(path).catch(console.error);
 

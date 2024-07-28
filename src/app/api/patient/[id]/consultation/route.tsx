@@ -38,8 +38,8 @@ export const POST = async (req: NextRequest ,  { params }: { params: { id: strin
       const uniqueFileName = `${fullNamePatient}-consult-${files.indexOf(file) + 1}-${file.name}`;
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const path = join("public", uniqueFileName);
-      await writeFile(path, buffer);
+      const path = join("uploads", uniqueFileName);
+      await writeFile(path, buffer  as unknown as Uint8Array);
       fileNames.push(uniqueFileName);
       filePaths.push(path); // Keep track of the file paths for potential rollback
     }
@@ -107,7 +107,7 @@ export async function DELETE(
     }
     /*delete files from local*/
     for (let name of consultation.consultationDocuments) {
-      let path = join("public", name);
+      let path = join("uploads", name);
       await unlink(path).catch(console.error); // Log error but don't throw to ensure all files are attempted to be deleted
     }
     /*delete user from db*/

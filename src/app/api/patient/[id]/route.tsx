@@ -99,7 +99,7 @@ export async function DELETE(
     for (let consultation of patient.consultations) {
       // Assuming each consultation has a 'documents' field that stores document names
       for (let docName of consultation.consultationDocuments) {
-        let docPath = join("public", docName);
+        let docPath = join("uploads", docName);
         await unlink(docPath).catch(console.error); // Log error but don't throw
       }
       // Delete the consultation record
@@ -109,7 +109,7 @@ export async function DELETE(
 
     /*delete files from local*/
     for (let name of patient.patientHistoryDocuments) {
-      let path = join("public", name);
+      let path = join("uploads", name);
       await unlink(path).catch(console.error); // Log error but don't throw to ensure all files are attempted to be deleted
     }
     /*delete user from db*/

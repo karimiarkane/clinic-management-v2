@@ -10,6 +10,8 @@ const getAllPatient = async () =>{
     }
       catch(err){
       console.log(err)
+      return { allPatients: [] }; // Return an empty array in case of error
+
     }
 }
 
@@ -19,7 +21,9 @@ export default async function Home() {
 
 
 
-const {allPatients} = await getAllPatient()
+const {allPatients} = await getAllPatient() || {}
+
+
 console.log("allPatients" , allPatients)
 
 
@@ -37,7 +41,7 @@ const navigation = [
 <div className="flex min-h-screen">
   <Sidebar navigationItem = {navigation} />
   <div className="flex-grow">
-    <PatientTable data={allPatients}/>
+    <PatientTable data={allPatients || []}/>
   </div>
 </div>
 

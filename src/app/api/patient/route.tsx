@@ -24,8 +24,8 @@ export const POST = async (req: NextRequest) => {
       const uniqueFileName = `${fullNamePatient}-${files.indexOf(file) + 1}-${file.name}`;
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const path = join("public", uniqueFileName);
-      await writeFile(path, buffer);
+      const path = join("uploads", uniqueFileName);
+      await writeFile(path, buffer as unknown as Uint8Array);
       fileNames.push(uniqueFileName);
       filePaths.push(path); // Keep track of the file paths for potential rollback
     }
@@ -73,7 +73,7 @@ export const GET = async (req: NextRequest) => {
   try {
     await connectDb();
      const allPatients = await  Patient.find({})
-     if(!allPatients){
+     if(!allPatients || allPatients.length === 0){
       return NextResponse.json({status : 404, message : 'patients non trouvés'})
     }
      return NextResponse.json({status : 200, allPatients ,  message : 'patients trouvés'})
