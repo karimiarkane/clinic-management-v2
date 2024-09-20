@@ -117,7 +117,7 @@ export default function AddConsultationModal({patient} : any) {
   };
   return (
     <>
-      <Button onPress={onOpen}>Ajouter une consultation</Button>
+      <Button  className="py-2 px-4 font-medium text-white bg-[#1e71b8] hover:bg-[#3abff0] rounded-full"  onPress={onOpen}>Ajouter une consultation</Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

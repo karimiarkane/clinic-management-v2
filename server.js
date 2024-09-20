@@ -1,9 +1,10 @@
 const express = require('express');
 const path = require('path');
 const next = require('next');
-
-// const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev :true });
+require('dotenv').config();
+const dev = process.env.NODE_ENV !== 'production';
+console.log('dev:', dev);
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {

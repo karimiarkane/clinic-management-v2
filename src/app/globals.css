@@ -2,8 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-.dynamic-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(3, 1fr));
-    gap: 1rem;
-  }
+

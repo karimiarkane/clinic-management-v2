@@ -7,12 +7,13 @@ import AploadNewDocumentModal from "./AploadNewDocumentModal";
 import AddConsultationModal from "./AddConsultationModal";
 import EditConsultationInfo from "./EditConsultationInfo";
 import ShowConsultationModal from "./ShowConsultationModal";
-
 import mongoose from "mongoose";
 import ShowDocumentModal from "./ShowDocumentModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faTrash,  faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 
 type PatientComponentProps = {
   patient: {
@@ -118,7 +119,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
 
   
   const hundleDeiteDocumentConsultation = async (consultationId : string  , docName: string) => {
-    console.log("docName", docName);
+    // console.log("docName", docName);
 
     let confirmDelete = window.confirm(
       "tu veux vraiment supprimer ce document de cette consultation ?"
@@ -148,46 +149,56 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
 
   return (
     <>
-      <div className="flex">
-        <nav className="  h-full border-r-2  p-5 bg-white space-y-8  w-1/3">
-          <h2 className="text-center text-lg font-semibold text-gray-700 border-b-2 p-5">
-            Information Personnelles
-          </h2>
-          <div className="flex-col items-center justify-center  ">
+      <div className="flex  min-h-screen ">
+        <nav className="  h-full border-r-2  p-5  bg-[#1d3e8e] space-y-8  w-1/3  min-h-screen">
+          <div className="flex justify-between border-b items-center">
+            <h2 
+            // className="text-center text-lg font-semibold text-gray-700  p-5"
+            className="text-center text-lg font-ethnocentric text-[#edffec] p-5"
+            >
+              Information Personnelles
+            </h2>
+           <div>
+           <Link href="/">
+           <FontAwesomeIcon size="2xl" color="#edffec" icon={faArrowLeft} />
+            </Link>
+           </div>
+          </div>
+          <div className="flex-col items-center justify-center text-[#edffec]">
             <p className="p-2">
-              <span className="font-bold text-gray-700">Nom</span>:{" "}
+              <span className="font-bold ">Nom</span>:{" "}
               {patient.nom}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Prénom</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">Prénom</span>:{" "}
               {patient.prenom}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Age</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">Age</span>:{" "}
               {patient.age}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Sexe</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">Sexe</span>:{" "}
               {patient.sexe}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Téléphone</span>:{" "}
+            <p className="p-2 text-century-gothic ">
+              <span className="font-bold ">Téléphone</span>:{" "}
               {patient.telephone}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Adresse</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold *">Adresse</span>:{" "}
               {patient.Addresse}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Profession</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">Profession</span>:{" "}
               {patient.profession}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">Assurance</span>:{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">Assurance</span>:{" "}
               {patient.assurance}
             </p>
-            <p className="p-2">
-              <span className="font-bold text-gray-700">État Civil: </span>{" "}
+            <p className="p-2 text-century-gothic">
+              <span className="font-bold ">État Civil: </span>{" "}
               {patient.etatCivil}
             </p>
 
@@ -210,17 +221,17 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
           </div>
         </nav>
 
-        <div className="w-2/3">
+        <div className="w-2/3  bg-[#edffec]">
           <Tabs aria-label="Options" fullWidth className="pt-5 ">
             <Tab
               key="HDM Info Medicale"
               title="HDM Info Medicale"
               className="p-5  "
             >
-              <Card>
+              <Card className="bg-white border rounded-lg shadow-md">
                 <CardBody>
                   <div className="patientDocument  mb-2">
-                    <h2 className="text-center text-lg font-semibold text-gray-700 border-b-2 mb-3">
+                    <h2 className="text-center text-lg font-semibold text-[#1e71b8] border-b-2 mb-3">
                       Dossier Medicale : {patient.patientHistoryDocuments.length}{" "}
                       document
                     </h2>
@@ -253,7 +264,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                   </div>
 
                   <div className="patientMedicalInfo  mb-3">
-                    <h2 className="text-center text-lg font-semibold text-gray-700 border-b-2 ">
+                    <h2 className="text-center text-lg font-semibold text-[#1e71b8] border-b-2 ">
                       Information Medicale
                     </h2>
                     <div className="flex-col items-center justify-center  ">
@@ -294,7 +305,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
               <Card>
                 <CardBody>
                   <div className="patientDocument  mb-2">
-                    <h2 className="text-center text-lg font-semibold text-gray-700 border-b-2 mb-3">
+                    <h2 className="text-center text-lg font-semibold text-[#1e71b8] border-b-2 mb-3">
                       consultation: Medicales : {consultation.length}{" "}
                       consultation
                     </h2>
@@ -396,3 +407,4 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
 };
 
 export default PatientComponent;
+

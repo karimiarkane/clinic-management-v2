@@ -38,12 +38,24 @@ const navigation = [
 
   return (
     <>
-<div className="flex min-h-screen">
+{/* <div className="flex min-h-screen">
   <Sidebar navigationItem = {navigation} />
-  <div className="flex-grow">
-    <PatientTable data={allPatients || []}/>
+  <div className="flex-grow ">
+    <PatientTable  data={allPatients || []}/>
   </div>
-</div>
+</div> */}
+ <div className="flex min-h-screen bg-[#edffec]">
+        {/* Sidebar with a fixed width and height */}
+        <Sidebar navigationItem={navigation}  />
+
+        {/* Main content area */}
+        <div className="flex-grow p-6">
+          {/* Patient Table with a card-like container */}
+          <div className="bg-white shadow-lg rounded-lg p-4">
+            <PatientTable data={allPatients || []} />
+          </div>
+        </div>
+      </div>
 
    
 

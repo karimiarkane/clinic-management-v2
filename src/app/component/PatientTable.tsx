@@ -38,8 +38,6 @@ interface Patient {
   patientHistoryDocuments: string[];
 }
 
-
-
   useEffect(() => {
    
     const searchTerms = searchTerm.toLowerCase().split(' ').filter(term => term.trim() !== '');
@@ -80,8 +78,11 @@ router.refresh()
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-10 ">
-      <div className="items-end justify-between md:flex   ">
+    <div 
+    // className="max-w-screen-xl mx-auto px-4 md:px-8 py-10  bg-[#edffec]"
+     className=" max-w-screen-xl mx-auto px-4 md:px-8 py-10 text-[#02001b]  "
+    >
+      <div className="items-end justify-between md:flex">
         <div className="max-w-lg  ">
         <form
             onSubmit={(e) => e.preventDefault()} 
@@ -93,7 +94,9 @@ router.refresh()
                     type="text"
                     placeholder="Search"
                     value={searchTerm}
-                    className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
+                    // className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
+                    className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-[#f0f0f0] focus:bg-white focus:border-[#1e71b8]"
+
                     onChange={(e)=>setSearchTerm(e.target.value)}
                 />
             </div>
@@ -106,7 +109,9 @@ router.refresh()
       </div>
       <div className="mt-12 shadow-sm border rounded-lg overflow-x-auto">
         <table className="w-full table-auto text-sm text-left">
-          <thead className="bg-gray-50 text-gray-600 font-medium border-b">
+          <thead
+          //  className="bg-gray-50 text-gray-600 font-medium border-b"
+          className="bg-[#1d3e8e] text-[#edffec] font-bold border-b"           >
             <tr>
               <th className="py-3 px-6">Nom</th>
               <th className="py-3 px-6">Prenom</th>
@@ -116,7 +121,10 @@ router.refresh()
               <th className="py-3 px-6"></th>
             </tr>
           </thead>
-          <tbody className="text-gray-600 divide-y">
+          <tbody
+          //  className="text-gray-600 divide-y"
+className="text-[#02001b] divide-y"
+           >
             {currentItems.map((item: any, idx: any) => (
               <tr key={idx}>
                 <td className="px-6 py-4 whitespace-nowrap">{item.nom} </td>
@@ -130,14 +138,17 @@ router.refresh()
                 
               
                   <Link href={`/Home/${item._id}`}>
-                    <button className="py-2 leading-none px-3 font-medium text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg">
+                    <button 
+                    // className="py-2 leading-none px-3 font-medium text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg"
+                    className="py-2 leading-none px-3 font-medium text-[#1d3e8e] duration-150 hover:bg-[#edffec] rounded-lg">
                       consulter
                     </button>
                   </Link>
 
                   <button
                     onClick={() => hundleDeliteClick(item._id)}
-                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                    // className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-gray-50 rounded-lg"
+                    className="py-2 leading-none px-3 font-medium text-red-600 hover:text-red-500 duration-150 hover:bg-[#edffec] rounded-lg"
                   >
                     supprimer
                   </button>
@@ -150,17 +161,23 @@ router.refresh()
 
       {/*pagination*/}
 
-      <div className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8">
-        <div className="hidden justify-between text-sm md:flex">
-          <div>
-            AFFICHAGE DE {(currentPage - 1) * itemsPerPage} -
-            {currentPage * itemsPerPage}  PATIENT SUR UN TOTAL DE  {data.length} PATIENTS
-          </div>
-          <div className="flex items-center gap-12" aria-label="Pagination">
+      <div 
+      className="max-w-screen-xl mx-auto mt-12 px-4 text-[#02001b] md:px-8"
+      // className="max-w-screen-xl mx-auto mt-12 px-4 text-gray-600 md:px-8"
+      
+      >
+        <div className="hidden justify-end text-sm md:flex">
+         
+          <div
+          //  className="flex items-center gap-12" aria-label="Pagination"
+           className="flex items-center gap-12" aria-label="Pagination"
+           >
             <button
               onClick={() => setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className="cursor-pointer hover:text-indigo-600"
+              // className="cursor-pointer hover:text-indigo-600"
+              className="cursor-pointer rounded-full  py-2 px-4 text-white bg-[#1e71b8] "
+
             >
               précédent
             </button>
@@ -168,8 +185,9 @@ router.refresh()
             <button
               onClick={() => setCurrentPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="cursor-pointer hover:text-indigo-600"
-            >
+              // className="cursor-pointer hover:text-indigo-600"
+              // className="py-2 px-4 font-medium text-white bg-[#1d3e8e] hover:bg-[#3abff0] rounded-full" 
+              className="cursor-pointer py-2 px-4  text-white bg-[#1e71b8]  rounded-full"                        >
               suivant
             </button>
           </div>

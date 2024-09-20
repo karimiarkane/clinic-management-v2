@@ -119,7 +119,7 @@ export default function AploadNewDocumentModal({ patient  , fetchPath , fieldNam
 
   return (
     <>
-      <Button onPress={onOpen}>Ajouter document</Button>
+      <Button  className="py-2 px-4 font-medium text-white bg-[#1e71b8] hover:bg-[#3abff0] rounded-full" onPress={onOpen}>Ajouter document</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} >
         <ModalContent>
           {(onClose) => (

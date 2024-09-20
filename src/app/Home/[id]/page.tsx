@@ -21,7 +21,7 @@ const Page =  async ({params } : {params : {id : string}}  )  => {
   const {patient  , consultation} : {patient : any , consultation : any}= responce
   return (
 <>
-<PatientComponent patient={patient} consultation={consultation} />
+<PatientComponent  patient={patient} consultation={consultation} />
 
 </>
 

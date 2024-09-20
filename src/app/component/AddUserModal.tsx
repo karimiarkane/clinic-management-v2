@@ -152,7 +152,7 @@ export default function AddUserModal() {
   };
   return (
     <>
-      <Button onPress={onOpen}>Ajouter un patient</Button>
+      <Button className="py-2 px-4 font-medium text-white bg-[#1e71b8]  rounded-full" onPress={onOpen}>Ajouter un patient</Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
