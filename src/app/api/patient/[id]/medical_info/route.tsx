@@ -12,12 +12,16 @@ export async function PUT(
       const { id } = params;
 
       const formDataToStore = await request.formData();
-      console.log("formDataToStore", formDataToStore);
+      console.log("formDataToStore from updating usermedicalinfo", formDataToStore);
       await connectDb();
       await Patient.findByIdAndUpdate(id, {
         antecedentsPersonnels: formDataToStore.get("antecedentsPersonnels"),
         antecedentsFamiliaux: formDataToStore.get("antecedentsFamiliaux"),
         informationsUtiles: formDataToStore.get("informationsUtiles"),
+        antecedentsChirurgicaux: formDataToStore.get("antecedentsChirurgicaux"),
+        TraitementsEnCours:formDataToStore.get("TraitementsEnCours"),
+        Allergies: formDataToStore.get("Allergies")
+
       });
   
       return  NextResponse.json({message : "patient modifié " , status: 200 });

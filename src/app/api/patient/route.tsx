@@ -8,6 +8,7 @@ export const POST = async (req: NextRequest) => {
   try {
     await connectDb();
     const formdata = await req.formData();
+    console.log("formdata recieved in the back from add user modal", formdata)
     const files: File[] = formdata.getAll("patientHistoryDocuments") as unknown as File[];
     const fullNamePatient: string = String(formdata.get("nom") ?? '') + String(formdata.get("prenom") ?? '');
     let fileNames: string[] = [];
@@ -50,7 +51,10 @@ export const POST = async (req: NextRequest) => {
         informationsUtiles: formdata.get("informationsUtiles"),
         antecedentsFamiliaux: formdata.get("antecedentsFamiliaux"),
         antecedentsPersonnels: formdata.get("antecedentsPersonnels"),
-        patientHistoryDocuments: fileNames
+        patientHistoryDocuments: fileNames,
+        antecedentsChirurgicaux: formdata.get("antecedentsChirurgicaux"),
+        TraitementsEnCours:formdata.get("TraitementsEnCours"),
+        Allergies :formdata.get("allergies"),
       });
       console.log("patient created")
     } catch (dbError) {

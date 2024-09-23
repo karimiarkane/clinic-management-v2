@@ -39,7 +39,6 @@ interface Patient {
 }
 
   useEffect(() => {
-   
     const searchTerms = searchTerm.toLowerCase().split(' ').filter(term => term.trim() !== '');
     console.log("searchTerms", searchTerms)
     const filtered = data.filter((patient : Patient)  => {
@@ -79,7 +78,6 @@ router.refresh()
 
   return (
     <div 
-    // className="max-w-screen-xl mx-auto px-4 md:px-8 py-10  bg-[#edffec]"
      className=" max-w-screen-xl mx-auto px-4 md:px-8 py-10 text-[#02001b]  "
     >
       <div className="items-end justify-between md:flex">

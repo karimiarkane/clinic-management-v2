@@ -21,6 +21,9 @@ type patientMedicalInfoProps = {
     antecedentsPersonnels : string ,
     informationsUtiles : string ,
     antecedentsFamiliaux : string 
+    antecedentsChirurgicaux: string,
+    Allergies : string,
+    TraitementsEnCours: string,
   }
 };
 
@@ -52,13 +55,18 @@ export default function EditPersonnalInfoModal({patientMedicalInfo} : patientMed
     setErrMsg("");
     setSuccessMsg("");
     e.preventDefault();
-    console.log("formData mojamaa : ", formData);
+    console.log("formData mojamaa from inputs in edit medical info ", formData);
     const formDataToSend = new FormData();
 
     formDataToSend.append("antecedentsPersonnels", formData.antecedentsPersonnels);
     formDataToSend.append("antecedentsFamiliaux", formData.antecedentsFamiliaux);
     formDataToSend.append("informationsUtiles", formData.informationsUtiles);
-    console.log("formDataToSend : ");
+    formDataToSend.append("TraitementsEnCours", formData.TraitementsEnCours);
+    formDataToSend.append("antecedentsChirurgicaux", formData.antecedentsChirurgicaux);
+    formDataToSend.append("Allergies", formData.Allergies);
+  
+
+    console.log("formDataToSend to the backend in edit medical info: ");
     for (let [key, value] of formDataToSend.entries()) {
       console.log(key, value);
     }
@@ -159,6 +167,60 @@ export default function EditPersonnalInfoModal({patientMedicalInfo} : patientMed
                             onChange={handleChange}
                             required
                             value={formData.informationsUtiles}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="Allergies"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Allergies :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="Allergies"
+                            name="Allergies"
+                            onChange={handleChange}
+                            required
+                            value={formData.Allergies}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="TraitementsEnCours"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Traitements En Cours :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="TraitementsEnCours"
+                            name="TraitementsEnCours"
+                            onChange={handleChange}
+                            required
+                            value={formData.TraitementsEnCours}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="antecedentsChirurgicaux"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Antecedents Chirurgicaux :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="antecedentsChirurgicaux"
+                            name="antecedentsChirurgicaux"
+                            onChange={handleChange}
+                            required
+                            value={formData.antecedentsChirurgicaux}
                             className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           ></textarea>
                         </div>

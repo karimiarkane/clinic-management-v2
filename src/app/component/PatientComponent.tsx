@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Card, CardBody, Button } from "@nextui-org/react";
 import EditPersonnalInfoModal from "./EditPersonnalInfoModal";
 import EditMedicalInfoModal from "./EditMedicalInfoModal";
@@ -10,10 +10,25 @@ import ShowConsultationModal from "./ShowConsultationModal";
 import mongoose from "mongoose";
 import ShowDocumentModal from "./ShowDocumentModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash,  faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Consultation from './ConsultationTab'
+import DossierMedicalTab from "./DossierMedicalTab"
+import InfoPersoTab from './InfoPersoTab'
+import InfoMedTab from './InfoMedTab'
+import CreateConsultTab from './CreateConsultTab'
+import {
+  faArrowLeft,
+  faHospitalUser,
+  faFolder,
+  faPersonCircleQuestion,
+  faPersonCirclePlus,
+  faNotesMedical,
+  faFileInvoice,
+  faFileMedical,
+  faFileWaveform,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 
 type PatientComponentProps = {
   patient: {
@@ -40,6 +55,7 @@ type PatientComponentProps = {
       }
     ];
   };
+
   consultation: [
     {
       _id: string;
@@ -58,6 +74,93 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
   patient,
   consultation,
 }: PatientComponentProps) => {
+  const [selectedTab, setSelectedTab] = useState("Consultation");
+
+  const tabs = [
+    {
+      key: "Consultation",
+      title: "Consultation",
+      icon: (
+        <FontAwesomeIcon
+          icon={faNotesMedical}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+        />
+      ),
+    },
+    {
+      key: "Nouvelle consult",
+      title: "Ajouter Consultation",
+      icon: (
+        <FontAwesomeIcon icon={faPlus}   size="1x"
+        color="#1e71b8"
+        className="mr-2"/>
+      ),
+    },
+    {
+      key: "Information Personnelle",
+      title: "Info Personnelles",
+      icon: (
+        <FontAwesomeIcon
+          icon={faPersonCircleQuestion}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+          
+        />
+      ),
+    },
+    {
+      key: "Informations Medicales",
+      title: "Info Medicales",
+      icon: (
+        <FontAwesomeIcon
+          icon={faPersonCirclePlus}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+        />
+      ),
+    },
+    {
+      key: "Dossier Medicale",
+      title: "Dossier Medicale",
+      icon: (
+        <FontAwesomeIcon
+          icon={faFolder}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+        />
+      ),
+    },
+    {
+      key: "ScannerEtRadio",
+      title: "Scanner/Radio",
+      icon: (
+        <FontAwesomeIcon
+          icon={faFileWaveform}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+        />
+      ),
+    },
+    {
+      key: "Ordonnace",
+      title: " Ordonnace",
+      icon: (
+        <FontAwesomeIcon
+          icon={faFileMedical}
+          size="1x"
+          color="#1e71b8"
+          className="mr-2"
+        />
+      ),
+    },
+  ];
+
   const router = useRouter();
 
   const hundleDeliteClick = async (docName: string) => {
@@ -90,7 +193,6 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
   };
 
   const hundleDeliteConsultation = async (consultationId: string) => {
-
     let confirmDelete = window.confirm(
       "tu veux vraiment supprimer cette consultation ?"
     );
@@ -100,8 +202,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
         const res = await fetch(`/api/patient/${patient._id}/consultation`, {
           method: "DELETE",
           body: JSON.stringify({
-            
-            consultationId
+            consultationId,
           }),
         });
         const data = await res.json();
@@ -117,8 +218,10 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
     }
   };
 
-  
-  const hundleDeiteDocumentConsultation = async (consultationId : string  , docName: string) => {
+  const hundleDeiteDocumentConsultation = async (
+    consultationId: string,
+    docName: string
+  ) => {
     // console.log("docName", docName);
 
     let confirmDelete = window.confirm(
@@ -127,13 +230,16 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
 
     if (confirmDelete) {
       try {
-        const res = await fetch(`/api/patient/${patient._id}/consultation/docierConsultation`, {
-          method: "DELETE",
-          body: JSON.stringify({
-            documentName: docName,
-            consultationId: consultationId,
-          }),
-        });
+        const res = await fetch(
+          `/api/patient/${patient._id}/consultation/docierConsultation`,
+          {
+            method: "DELETE",
+            body: JSON.stringify({
+              documentName: docName,
+              consultationId: consultationId,
+            }),
+          }
+        );
         const data = await res.json();
         if (data.status === 200) {
           window.alert("Document supprimé");
@@ -147,82 +253,165 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
     }
   };
 
+ 
+
   return (
     <>
-      <div className="flex  min-h-screen ">
-        <nav className="  h-full border-r-2  p-5  bg-[#1d3e8e] space-y-8  w-1/3  min-h-screen">
-          <div className="flex justify-between border-b items-center">
-            <h2 
-            // className="text-center text-lg font-semibold text-gray-700  p-5"
-            className="text-center text-lg font-ethnocentric text-[#edffec] p-5"
-            >
-              Information Personnelles
-            </h2>
-           <div>
-           <Link href="/">
-           <FontAwesomeIcon size="2xl" color="#edffec" icon={faArrowLeft} />
-            </Link>
-           </div>
-          </div>
-          <div className="flex-col items-center justify-center text-[#edffec]">
-            <p className="p-2">
-              <span className="font-bold ">Nom</span>:{" "}
-              {patient.nom}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">Prénom</span>:{" "}
-              {patient.prenom}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">Age</span>:{" "}
-              {patient.age}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">Sexe</span>:{" "}
-              {patient.sexe}
-            </p>
-            <p className="p-2 text-century-gothic ">
-              <span className="font-bold ">Téléphone</span>:{" "}
-              {patient.telephone}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold *">Adresse</span>:{" "}
-              {patient.Addresse}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">Profession</span>:{" "}
-              {patient.profession}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">Assurance</span>:{" "}
-              {patient.assurance}
-            </p>
-            <p className="p-2 text-century-gothic">
-              <span className="font-bold ">État Civil: </span>{" "}
-              {patient.etatCivil}
-            </p>
+      <div className="flex  min-h-screen bg-[#F6F8FA]">
+        {/* information personelle */}
 
-            <div className="flex justify-end">
-              <EditPersonnalInfoModal
-                patientPersonnalInfo={{
-                  id: patient._id,
-                  nom: patient.nom,
-                  prenom: patient.prenom,
-                  age: patient.age,
-                  sexe: patient.sexe,
-                  telephone: patient.telephone,
-                  Addresse: patient.Addresse,
-                  profession: patient.profession,
-                  assurance: patient.assurance,
-                  etatCivil: patient.etatCivil,
-                }}
+        {/* <div className="border-r-2  p-5  bg-[#1d3e8e] space-y-8  w-1/4">
+          <nav className="     ">
+            <div className="flex justify-between border-b items-center">
+              <h2
+              // className="text-center text-lg font-semibold text-gray-700  p-5"
+              className="text-center text-lg font-ethnocentric text-[#edffec] p-5"
+              >
+                Information Personnelles
+              </h2>
+             <div>
+             <Link href="/">
+             <FontAwesomeIcon size="2xl" color="#edffec" icon={faArrowLeft} />
+              </Link>
+             </div>
+            </div>
+            <div className="flex-col items-center justify-center text-[#edffec]">
+              <p className="p-2">
+                <span className="font-bold ">Nom</span>:{" "}
+                {patient.nom}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">Prénom</span>:{" "}
+                {patient.prenom}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">Age</span>:{" "}
+                {patient.age}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">Sexe</span>:{" "}
+                {patient.sexe}
+              </p>
+              <p className="p-2 text-century-gothic ">
+                <span className="font-bold ">Téléphone</span>:{" "}
+                {patient.telephone}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold *">Adresse</span>:{" "}
+                {patient.Addresse}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">Profession</span>:{" "}
+                {patient.profession}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">Assurance</span>:{" "}
+                {patient.assurance}
+              </p>
+              <p className="p-2 text-century-gothic">
+                <span className="font-bold ">État Civil: </span>{" "}
+                {patient.etatCivil}
+              </p>
+              <div className="flex justify-end">
+                <EditPersonnalInfoModal
+                  patientPersonnalInfo={{
+                    id: patient._id,
+                    nom: patient.nom,
+                    prenom: patient.prenom,
+                    age: patient.age,
+                    sexe: patient.sexe,
+                    telephone: patient.telephone,
+                    Addresse: patient.Addresse,
+                    profession: patient.profession,
+                    assurance: patient.assurance,
+                    etatCivil: patient.etatCivil,
+                  }}
+                />
+              </div>
+            </div>
+          </nav>
+        </div> */}
+
+        <div className="w-1/5">
+          <div className="NameAndReturn flex justify-around items-center">
+          
+            <div>
+              <Link href="/">
+                <FontAwesomeIcon
+                  size="2x"
+                  color="#1e71b8"
+                  icon={faArrowLeft}
+                />
+              </Link>
+            </div>
+            <h2 className="text-center text-lg font-ethnocentric p-5">
+              {patient.nom} {patient.prenom}
+            </h2>
+          </div>
+          <div className="card bg-white p-6 rounded-lg shadow-lg  border-solid border-2">
+            <div className=" mridicon text-center  ">
+              <FontAwesomeIcon
+                icon={faHospitalUser}
+                color="#1e71b8"
+                size="4x"
               />
             </div>
+            <h3 className="mt-4 text-xl font-semibold text-center">
+              {patient.nom} {patient.prenom}
+            </h3>
+            <p className="text-center text-gray-500">{patient.telephone}</p>
+            <div className=" tabs flex flex-col items-center ">
+            {tabs.map((tab, index) => {
+              return (
+                <div
+                  key={index}
+                  className="border-solid border-2 w-11/12 p-2 mt-1  flex items-center  cursor-pointer rounded-md bg-[#E3E5E6]"
+                  onClick={() => setSelectedTab(tab.key)}
+                >
+                  {tab.icon}
+                  {tab.title}
+                </div>
+              );
+            })}
           </div>
-        </nav>
+          </div>
+          *{" "}
+          {/* <div className=" tabs flex flex-col items-center ">
+            {tabs.map((tab, index) => {
+              return (
+                <div
+                  key={index}
+                  className="border-solid border-2 w-3/4 p-3 mt-1  flex items-center  cursor-pointer "
+                  onClick={() => setSelectedTab(tab.key)}
+                >
+                  {tab.icon}
+                  {tab.title}
+                </div>
+              );
+            })}
+          </div> */}
+          *{" "}
+        </div>
 
-        <div className="w-2/3  bg-[#edffec]">
-          <Tabs aria-label="Options" fullWidth className="pt-5 ">
+        <div className="w-3/4  bg-[#F6F8FA] ">
+{selectedTab == "Consultation" && (
+  <Consultation consultation = {consultation} patient = {patient}/>)}
+{selectedTab == "Nouvelle consult" && (
+  <CreateConsultTab patient={patient} />)}
+  {selectedTab == "Ordonnace" && (
+  <div>ordonnace</div>)}
+  {selectedTab == "ScannerEtRadio" && (
+  <div>ScannerEtRadio</div>)}
+  {selectedTab == "Dossier Medicale" && (
+  <DossierMedicalTab patient={patient} />)}
+  {selectedTab == "Information Personnelle" && (
+  <InfoPersoTab patient={patient} />)}
+  {selectedTab == "Informations Medicales" && (
+  <InfoMedTab patient={patient} />)}
+
+
+
+          {/* <Tabs aria-label="Options" fullWidth className="pt-5 ">
             <Tab
               key="HDM Info Medicale"
               title="HDM Info Medicale"
@@ -232,8 +421,8 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                 <CardBody>
                   <div className="patientDocument  mb-2">
                     <h2 className="text-center text-lg font-semibold text-[#1e71b8] border-b-2 mb-3">
-                      Dossier Medicale : {patient.patientHistoryDocuments.length}{" "}
-                      document
+                      Dossier Medicale :{" "}
+                      {patient.patientHistoryDocuments.length} document
                     </h2>
 
                     <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 ">
@@ -259,7 +448,11 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                       )}
                     </div>
                     <div className="flex justify-end mt-2">
-                      <AploadNewDocumentModal patient={patient}  fetchPath={`/api/patient/${patient._id}/documents`}  fieldName="patientHistoryDocuments"/>
+                      <AploadNewDocumentModal
+                        patient={patient}
+                        fetchPath={`/api/patient/${patient._id}/documents`}
+                        fieldName="patientHistoryDocuments"
+                      />
                     </div>
                   </div>
 
@@ -313,8 +506,6 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                     <div className="  ">
                       {consultation && consultation.length > 0 ? (
                         consultation.map((consult) => (
-                        
-
                           <div
                             key={consult._id}
                             className="bg-white border border-gray-200 rounded-lg p-4 mb-4 shadow-sm"
@@ -339,15 +530,22 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                               </div>
 
                               <div className="buttons flex  items-center gap-1">
-                                {/* <button className=" bg-blue-500 text-white rounded hover:bg-blue-600">
-                                  View Details
-                                </button> */}
-                                <ShowConsultationModal patient={patient} consultation={consult}/>
-                                {/* <button className=" bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                                  Update
-                                </button> */}
-                                <EditConsultationInfo consultationInfo = {consult}  patient={patient}/>
-                                <Button className=" bg-red-500 text-white rounded hover:bg-red-600 "   onClick={() => hundleDeliteConsultation(consult._id )}>
+                                
+                                <ShowConsultationModal
+                                  patient={patient}
+                                  consultation={consult}
+                                />
+                               
+                                <EditConsultationInfo
+                                  consultationInfo={consult}
+                                  patient={patient}
+                                />
+                                <Button
+                                  className=" bg-red-500 text-white rounded hover:bg-red-600 "
+                                  onClick={() =>
+                                    hundleDeliteConsultation(consult._id)
+                                  }
+                                >
                                   Supprimer
                                 </Button>
                               </div>
@@ -356,34 +554,42 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                             <div className=" grid grid-cols-1 md:grid-cols-3 gap-4 ">
                               {consult.consultationDocuments &&
                               consult.consultationDocuments.length > 0 ? (
-                                consult.consultationDocuments.map(
-                                  (docName) => (
-                                    <div
-                                      key={docName}
-                                      className="flex items-center justify-around gap-1  bg-gray-100 rounded-lg shadow hover:bg-gray-200 py-2"
+                                consult.consultationDocuments.map((docName) => (
+                                  <div
+                                    key={docName}
+                                    className="flex items-center justify-around gap-1  bg-gray-100 rounded-lg shadow hover:bg-gray-200 py-2"
+                                  >
+                                    <ShowDocumentModal fileName={docName} />
+                                    <button
+                                      onClick={() =>
+                                        hundleDeiteDocumentConsultation(
+                                          consult._id,
+                                          docName
+                                        )
+                                      }
+                                      className="text-gray-600 hover:text-red-600"
                                     >
-                                      <ShowDocumentModal fileName={docName} />
-                                      <button
-                                        onClick={() =>
-                                          hundleDeiteDocumentConsultation(consult._id ,  docName)
-                                        }
-                                        className="text-gray-600 hover:text-red-600"
-                                      >
-                                        {" "}
-                                        <FontAwesomeIcon
-                                          icon={faTrash}
-                                          size="1x"
-                                        />
-                                      </button>
-                                    </div>
-                                  )
-                                )
+                                      {" "}
+                                      <FontAwesomeIcon
+                                        icon={faTrash}
+                                        size="1x"
+                                      />
+                                    </button>
+                                  </div>
+                                ))
                               ) : (
-                                <p>cette consultation n&apos;a aucun document </p>
+                                <p>
+                                  cette consultation n&apos;a aucun document{" "}
+                                </p>
                               )}
                             </div>
                             <div className="flex justify-end mt-2">
-                              <AploadNewDocumentModal patient={patient} consultation={consult}  fetchPath={`/api/patient/${patient._id}/consultation/docierConsultation`} fieldName="consultationDocuments"  />
+                              <AploadNewDocumentModal
+                                patient={patient}
+                                consultation={consult}
+                                fetchPath={`/api/patient/${patient._id}/consultation/docierConsultation`}
+                                fieldName="consultationDocuments"
+                              />
                             </div>
                           </div>
                         ))
@@ -398,13 +604,11 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                 </CardBody>
               </Card>
             </Tab>
-          </Tabs>
+          </Tabs> */}
         </div>
       </div>
-    
     </>
   );
 };
 
 export default PatientComponent;
-

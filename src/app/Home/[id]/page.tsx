@@ -1,4 +1,5 @@
 import PatientComponent from "@/app/component/PatientComponent"
+import { headers } from "next/headers"
 
 
 const  getPatient = async (id : string)=>{  
@@ -14,9 +15,10 @@ const  getPatient = async (id : string)=>{
 
 const Page =  async ({params } : {params : {id : string}}  )  => {
 
-
+const headersList = headers()
+console.log("headersList", headers)
   const responce = await getPatient(params.id)
-  console.log("responce", responce)
+  // console.log("the patient object sent to the patient", responce)
 
   const {patient  , consultation} : {patient : any , consultation : any}= responce
   return (

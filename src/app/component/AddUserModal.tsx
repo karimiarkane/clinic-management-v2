@@ -37,6 +37,9 @@ export default function AddUserModal() {
     antecedentsFamiliaux: "",
     informationsUtiles: "",
     patientHistoryDocuments: [],
+    antecedentsChirurgicaux:"",
+    TraitementsEnCours:"",
+    Allergies:"",
   });
   const handleChange = (e: any) => {
     const { name, value } = e.currentTarget;
@@ -76,7 +79,7 @@ export default function AddUserModal() {
     setErrMsg("");
     setSuccessMsg("");
     e.preventDefault();
-    console.log("formData mojamaa : ", formData);
+    console.log("formData mojamaa from inputs in the add user modal  : ", formData);
     const formDataToSend = new FormData();
 
     formDataToSend.append("nom", formData.nom);
@@ -105,8 +108,11 @@ export default function AddUserModal() {
         formDataToSend.append("patientHistoryDocuments", file);
       });
     }
+    formDataToSend.append("antecedentsChirurgicaux",formData.antecedentsChirurgicaux);
+    formDataToSend.append("TraitementsEnCours",formData.TraitementsEnCours);
+    formDataToSend.append("Allergies",formData.Allergies);
 
-    console.log("formDataToSend : ");
+    console.log("formDataToSend to the back from the user add modal: ");
     for (let [key, value] of formDataToSend.entries()) {
       console.log(key, value);
     }
@@ -138,6 +144,9 @@ export default function AddUserModal() {
           antecedentsFamiliaux: "",
           informationsUtiles: "",
           patientHistoryDocuments: [],
+          antecedentsChirurgicaux:"",
+          TraitementsEnCours:"",
+          Allergies:"",
         });
         router.refresh();
       }
@@ -369,6 +378,65 @@ export default function AddUserModal() {
                           ></textarea>
                         </div>
                       </div>
+
+{/* 3 jded  */}
+<div className="col-span-full">
+                        <label
+                          htmlFor="Allergies"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Allergies :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="Allergies"
+                            name="Allergies"
+                            onChange={handleChange}
+                            required
+                            value={formData.Allergies}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="TraitementsEnCours"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Traitements En Cours :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="TraitementsEnCours"
+                            name="TraitementsEnCours"
+                            onChange={handleChange}
+                            required
+                            value={formData.TraitementsEnCours}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div className="col-span-full">
+                        <label
+                          htmlFor="antecedentsChirurgicaux"
+                          className="block text-sm font-medium leading-6 text-gray-900"
+                        >
+                          Antecedents Chirurgicaux :
+                        </label>
+                        <div className="mt-2">
+                          <textarea
+                            id="antecedentsChirurgicaux"
+                            name="antecedentsChirurgicaux"
+                            onChange={handleChange}
+                            required
+                            value={formData.antecedentsChirurgicaux}
+                            className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          ></textarea>
+                        </div>
+                      </div>
+
+
+
 {/* document */}
                       <div className="py-3 flex gap-x-4 items-center">
                         <label htmlFor="documents" className="text-gray-600">

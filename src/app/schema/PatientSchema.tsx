@@ -49,6 +49,10 @@ const patientSchema = new mongoose.Schema({
   informationsUtiles: String,
   antecedentsFamiliaux: String,
   antecedentsPersonnels: String,
+  antecedentsChirurgicaux: String,
+  Allergies : String,
+  TraitementsEnCours: String,
+
 
   consultations: [
     {
