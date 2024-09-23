@@ -1,18 +1,6 @@
 import type { Metadata } from "next";
 import "../globals.css";
-
-
-import {
-  faStethoscope,
-  faSyringe,
-  faUserGroup,
-  faHouseChimney,
-  faXRay,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import { headers } from "next/headers";
-
+import SideBar from "../component/SideBar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,112 +12,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const navigation = [
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faUserGroup}
-          size="1x"
-          color="#1e71b8"
-          className="mr-2"
-        />
-      ),
-      href: "/Home",
-      name: "Patients",
-    },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faHouseChimney}
-          size="1x"
-          color="#1e71b8"
-          className="mr-2"
-        />
-      ),
-      href: "/Home/Medicaments",
-      name: "BDD Medicaments",
-    },
-    {
-      icon: (
-        <FontAwesomeIcon
-          icon={faXRay}
-          size="1x"
-          color="#1e71b8"
-          className="mr-2"
-        />
-      ),
-
-      href: "/Home/Analyse",
-      name: "BDD Analyse",
-    },
-    {
-
-        icon :  <FontAwesomeIcon
-        icon={faSyringe}
-        size="1x"
-        color="#1e71b8"
-        className="mr-2"
-      />,
-
-      href: "/Home/Allergies",
-      name: "BDD Allergies",
-    },
-  ];
-
-  const headerList = headers();
-  console.log('headerList', headerList);
-  const pathname = headerList.get("x-current-path");
-  console.log('pathname', pathname);
   return (
- 
-        <div className="flex min-h-screen bg-[#F6F8FA] ">
-          <div className=" border-r-4  w-1/6 bg-white  border-solid border-2 border-green-400 ">
-            <div
-              // className="sm:w-80  border-r-3   bg-white  flex justify-center "
-              className=" flex justify-center border-solid border-2 border-blue-600"
-            >
-              <div className="flex flex-col h-full  w-full  pt-12  border-solid border-2">
-                <div className=" sama3aticon flex justify-center w-full">
-                  <FontAwesomeIcon
-                    size="6x"
-                    color="#1e71b8"
-                    icon={faStethoscope}
-                  />
-                </div>
-                <div className="flex-1 flex flex-col h-full overflow-auto mt-10 border-solid border-2 border-red-700 ">
-                  <ul
-                    // className=" text-sm font-medium flex-1"
-                    className="w-full"
-                  >
-                    {navigation.map((item, idx) => (
-                      <li key={idx} className={` py-5 pl-2 my-2 ${pathname ==item.href ? 'text-blue-800' : 'text-[#BECOC2]'  } `} >
+    <div className="flex bg-[#F6F8FA]  ">
+      <SideBar />
 
-                        <Link
-                          href={item.href}
-                        
-
-                          //   className="flex items-center w-full h-full  justify-center gap-x-2  p-5 rounded-lg hover:bg-[#3abff0] active:bg-[#82388c] duration-150" //  className="flex items-center w-full h-full justify-center gap-x-2 text-gray-600 p-5 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
-                        >
-                            {item.icon}
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
+      <div className=" w-full h-screen pt-14 pl-5 pr-3 pb-2
+       overflow-y-auto ">
+        {/* Patient Table with a card-like container */}
+        <div className="mnabdaretourarriere3onwanwelcontent  h-full  ">
+          <div style={{height : "10%"}}>3fsa hna</div>
+          <div style={{height : "90%"}} className="maincontent shadow-lg rounded-lg">
+            {children}
           </div>
-
-          <div className="flex-grow p-6 ">
-            {/* Patient Table with a card-like container */}
-            <div className="border-2 border-solid shadow-lg rounded-lg p-4">
-              {children}
-              {/* <PatientTable data={allPatients || []} /> */}
-            </div>
-          </div>
+          {/* <PatientTable data={allPatients || []} /> */}
         </div>
-  
- 
+      </div>
+    </div>
   );
 }

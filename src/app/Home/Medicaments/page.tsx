@@ -1,9 +1,10 @@
 import React from 'react'
-
+import MedicationTable from  '../../component/TableMedication'
 const page = () => {
   return (
-    <div>Medicament</div>
-  )
+<>
+<MedicationTable/>
+</>  )
 }
 
 export default page

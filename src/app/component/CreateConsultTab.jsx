@@ -10,6 +10,8 @@ const CreateConsultTab = ({patient}) => {
       motif: "",
       resumeConsultation: "",
       consultationDocuments: [],
+      Medicaments: [],
+      Analyses: [],
     });
     const handleChange = (e) => {
       const { name, value } = e.currentTarget;
@@ -54,6 +56,8 @@ const CreateConsultTab = ({patient}) => {
   
       formDataToSend.append("motif", formData.motif);
       formDataToSend.append("resumeConsultation", formData.resumeConsultation);
+      formDataToSend.append("Medicaments", JSON.stringify(formData.Medicaments));
+      formDataToSend.append("Analyses", JSON.stringify(formData.Analyses));
      
       if (
         formData.consultationDocuments &&
@@ -83,6 +87,9 @@ const CreateConsultTab = ({patient}) => {
               motif: "",
       resumeConsultation: "",
       consultationDocuments: [],
+      Medicaments: [],
+      Analyses: [],
+  
           });
           router.refresh();
         }
@@ -141,6 +148,41 @@ const CreateConsultTab = ({patient}) => {
 
                        
                       </div>
+                      <div className="py-1 flex gap-x-4 items-center">
+                        <label htmlFor="Medicaments" className="text-gray-600">
+                        Medicaments:
+                        </label>
+                        <textarea
+                           id="resumeConsultation"
+                           name="resumeConsultation"
+                           onChange={handleChange}
+                           required
+                           value={formData.resumeConsultation}
+                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                         ></textarea>
+                      </div>
+                      <div className="py-1 flex gap-x-4 items-center">
+                        <label htmlFor="resumeConsultation" className="text-gray-600">
+                        Resumé de la consultation:
+                        </label>
+
+
+                        <textarea
+                           id="resumeConsultation"
+                           name="resumeConsultation"
+                           onChange={handleChange}
+                           required
+                           value={formData.resumeConsultation}
+                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                         ></textarea>
+
+
+
+
+                       
+                      </div>
+
+                   
 
                  
 {/* document */}

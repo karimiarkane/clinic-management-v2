@@ -78,7 +78,7 @@ router.refresh()
 
   return (
     <div 
-     className=" max-w-screen-xl mx-auto px-4 md:px-8 py-10 text-[#02001b]  "
+     className=" max-w-screen-xl mx-auto px-4 md:px-8 py-2 text-[#02001b]  bg-white  "
     >
       <div className="items-end justify-between md:flex">
         <div className="max-w-lg  ">

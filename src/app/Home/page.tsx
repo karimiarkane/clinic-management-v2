@@ -22,12 +22,11 @@ export default async function Home() {
 
   return (
     <>
-        <div className="flex-grow p-6 ">
+        {/* <div className="flex-grow p-6 "> */}
           {/* Patient Table with a card-like container */}
-          <div className="bg-[#F6F8FA] shadow-lg rounded-lg p-4">
             <PatientTable data={allPatients || []} />
-          </div>
-        </div>
+          
+        {/* </div> */}
     </>
   );
 }

@@ -12,6 +12,67 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 const Consultation =   ({consultation ,patient }) => {
+  const hundleDeliteConsultation = async (consultationId) => {
+    let confirmDelete = window.confirm(
+      "tu veux vraiment supprimer cette consultation ?"
+    );
+
+    if (confirmDelete) {
+      try {
+        const res = await fetch(`/api/patient/${patient._id}/consultation`, {
+          method: "DELETE",
+          body: JSON.stringify({
+            consultationId,
+          }),
+        });
+        const data = await res.json();
+        if (data.status === 200) {
+          window.alert("consultation supprimé");
+          router.refresh();
+        } else {
+          window.alert("Erreur lors de la suppression de l'utilisateur");
+        }
+      } catch (err) {
+        console.log("error deleting document : ", err);
+      }
+    }
+  };
+
+  const hundleDeiteDocumentConsultation = async (
+    consultationId,
+    docName
+  ) => {
+    // console.log("docName", docName);
+
+    let confirmDelete = window.confirm(
+      "tu veux vraiment supprimer ce document de cette consultation ?"
+    );
+
+    if (confirmDelete) {
+      try {
+        const res = await fetch(
+          `/api/patient/${patient._id}/consultation/docierConsultation`,
+          {
+            method: "DELETE",
+            body: JSON.stringify({
+              documentName: docName,
+              consultationId: consultationId,
+            }),
+          }
+        );
+        const data = await res.json();
+        if (data.status === 200) {
+          window.alert("Document supprimé");
+          router.refresh();
+        } else {
+          window.alert("Erreur lors de la suppression de l'utilisateur");
+        }
+      } catch (err) {
+        console.log("error deleting document : ", err);
+      }
+    }
+  };
+
   return (
     <>
   
