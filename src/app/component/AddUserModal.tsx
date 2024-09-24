@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useState, ChangeEventHandler, ChangeEvent } from "react";
+import { useState} from "react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -13,7 +13,6 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { faListSquares } from "@fortawesome/free-solid-svg-icons/faListSquares";
 
 export default function AddUserModal() {
   const router = useRouter();

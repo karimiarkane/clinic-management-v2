@@ -10,7 +10,7 @@ const CreateConsultTab = ({patient}) => {
       motif: "",
       resumeConsultation: "",
       consultationDocuments: [],
-      Medicaments: [],
+      Medicaments: [], 
       Analyses: [],
     });
     const handleChange = (e) => {
@@ -114,7 +114,6 @@ const CreateConsultTab = ({patient}) => {
                         <label htmlFor="motif" className="text-gray-600">
                           Motif :
                         </label>
-
                         <textarea
                            id="motif"
                            name="motif"

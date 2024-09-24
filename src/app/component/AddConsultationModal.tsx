@@ -13,7 +13,6 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { faListSquares } from "@fortawesome/free-solid-svg-icons/faListSquares";
 
 export default function AddConsultationModal({patient} : any) {
   const router = useRouter();
@@ -110,8 +109,7 @@ export default function AddConsultationModal({patient} : any) {
       console.error("error fetch font", error);
       setErrMsg(error.message);
     }
-    // setErrMsg("")
-    // setSuccessMsg("")
+
 
     
   };
