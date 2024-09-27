@@ -167,13 +167,12 @@ const CreateConsultTab = ({patient}) => {
           {selectedMedications.map((med, index) =>{
             return (
             
-            <div key={med.index}>
+            <div key={index}>
               <FontAwesomeIcon icon={faX}  onClick={handleMedDeliteClick(med)} />
               <p >{med.NOM_DE_MARQUE}</p>
               <input type="text" className="text" />
             </div>
           )
-
           })}
 
           {/* Display selected medications */}
