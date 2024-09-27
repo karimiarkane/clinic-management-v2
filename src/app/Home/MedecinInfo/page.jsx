@@ -32,3 +32,48 @@ const page = async () => {
 }
 
 export default page
+
+// import React from 'react';
+// import DoctorInfoForm from '../../component/DoctorInfoForm';
+
+// export async function getServerSideProps() {
+//   try {
+//     const data = await fetch('http://localhost:3000/api/medecin', { cache: 'no-store' });
+//     const doctor = await data.json();
+
+//     // Return the doctor data as props
+//     return {
+//       props: {
+//         doctor: doctor || null, // Handle cases where doctor data might be null or empty
+//       },
+//     };
+//   } catch (err) {
+//     console.log('Error fetching doctor info:', err);
+
+//     // Return empty doctor data on error
+//     return {
+//       props: {
+//         doctor: null,
+//       },
+//     };
+//   }
+// }
+
+// const Page = ({ doctor } ) => {
+//   // Default doctor info (could also come from the fetched data if available)
+//   const infoDoctor = doctor || {
+//     nom: 'iarkane',
+//     prenom: 'karim',
+//     Addresse: 'Ain Benian Alger',
+//     contact: '0558000466',
+//     specialite: 'Dentiste',
+//   };
+
+//   return (
+//     <>
+//       <DoctorInfoForm infoDoctor={infoDoctor} />
+//     </>
+//   );
+// };
+
+// export default Page;
