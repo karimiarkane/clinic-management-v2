@@ -2,9 +2,12 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useMedications } from '../context/MedicationContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 
 const CreateConsultTab = ({patient}) => {
+  
   const { selectedMedications ,setSelectedMedications } = useMedications();
     const [disableButton , setDisableButton] = useState(false)
     const router = useRouter()
@@ -40,6 +43,14 @@ const CreateConsultTab = ({patient}) => {
         [name]: selectedfiles,
       }));
     };  
+
+    useEffect(() => {
+    
+   console.log("selectedMedications : ", selectedMedications);
+    
+  }, [selectedMedications]);
+
+
     useEffect(() => {
     
         setSuccessMsg("");
@@ -109,6 +120,10 @@ const CreateConsultTab = ({patient}) => {
       // Navigate to the medication selection route
       router.push('/Home/Medicaments');
     };
+
+    const handleMedDeliteClick  = (med)=>{
+      setSelectedMedications(selectedMedications.filter((med) => med._id!== med._id));
+    }
   return (
 
 <>
@@ -149,6 +164,17 @@ const CreateConsultTab = ({patient}) => {
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Medicaments
           </label>
+          {selectedMedications.map((med, index) =>{
+            return (
+            
+            <div key={med.index}>
+              <FontAwesomeIcon icon={faX}  onClick={handleMedDeliteClick(med)} />
+              <p >{med.NOM_DE_MARQUE}</p>
+              <input type="text" className="text" />
+            </div>
+          )
+
+          })}
 
           {/* Display selected medications */}
           {/* <div className="border rounded p-2 mb-2">

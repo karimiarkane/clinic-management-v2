@@ -122,7 +122,7 @@ export default function MedicationTable() {
   const handleConfirmSelection = () => {
     // Navigate back to the prescription form
     console.log("patient id after selection medication " , patientId)
-    router.push(`/Home/${patientId}/`);
+    router.push(`/Home/${patientId}`);
   };
 
 
@@ -131,7 +131,7 @@ export default function MedicationTable() {
     <div className="p-4 bg-white">
       {/* Barre de recherche */}
       <div className='flex justify-center'>
-       { <div className=''>
+       { <div className='ajoutmed-butoon-icon'>
             <Button className="py-2 px-4 font-medium text-white bg-[#1e71b8]  rounded-md" onPress={onOpen}>Ajouter un medicament</Button>
         <Modal
           isOpen={isOpen}
@@ -223,6 +223,7 @@ export default function MedicationTable() {
           onChange={handleFillingSearchInput}
         />
       </div>
+      <Button onClick={handleConfirmSelectionClick}>suivant</Button>
       {/* add button  */}
  
    
