@@ -1,7 +1,11 @@
+'use client'
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { useMedications } from '../context/MedicationContext';
+
 
 const CreateConsultTab = ({patient}) => {
+  const { selectedMedications ,setSelectedMedications } = useMedications();
     const [disableButton , setDisableButton] = useState(false)
     const router = useRouter()
     const [errMsg, setErrMsg] = useState("");
@@ -35,8 +39,7 @@ const CreateConsultTab = ({patient}) => {
         ...prevState,
         [name]: selectedfiles,
       }));
-    };
-  
+    };  
     useEffect(() => {
     
         setSuccessMsg("");
@@ -102,16 +105,17 @@ const CreateConsultTab = ({patient}) => {
   
       
     };
-
-
+    const handleAddMedication = () => {
+      // Navigate to the medication selection route
+      router.push('/Home/Medicaments');
+    };
   return (
 
 <>
-<form id="myform" onSubmit={handleSubmit}>
-                  <div className="flex  justify-around items-center ">
-                    <div className="  infoPersonnelle w-2/5 border-r">
-                      <div className="py-1 flex gap-x-4 items-center">
-                        <label htmlFor="motif" className="text-gray-600">
+<form id="myform" className='border-solid border-4 border-green-700 p-2' onSubmit={handleSubmit}>
+                
+                      <div className="">
+                        <label htmlFor="motif" className=" text-gray-700 font-bold">
                           Motif :
                         </label>
                         <textarea
@@ -120,26 +124,20 @@ const CreateConsultTab = ({patient}) => {
                            onChange={handleChange}
                            required
                            value={formData.motif}
-                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                         ></textarea>
-
-
-                       
+                           className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
+                         ></textarea>           
                       </div>
-
-                      <div className="py-1 flex gap-x-4 items-center">
-                        <label htmlFor="resumeConsultation" className="text-gray-600">
+                      <div className="">
+                        <label htmlFor="resumeConsultation" className="text-gray-700 font-bold">
                         Resumé de la consultation:
                         </label>
-
-
                         <textarea
                            id="resumeConsultation"
                            name="resumeConsultation"
                            onChange={handleChange}
                            required
                            value={formData.resumeConsultation}
-                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                           className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                          ></textarea>
 
 
@@ -147,43 +145,35 @@ const CreateConsultTab = ({patient}) => {
 
                        
                       </div>
-                      <div className="py-1 flex gap-x-4 items-center">
-                        <label htmlFor="Medicaments" className="text-gray-600">
-                        Medicaments:
-                        </label>
-                        <textarea
-                           id="resumeConsultation"
-                           name="resumeConsultation"
-                           onChange={handleChange}
-                           required
-                           value={formData.resumeConsultation}
-                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                         ></textarea>
-                      </div>
-                      <div className="py-1 flex gap-x-4 items-center">
-                        <label htmlFor="resumeConsultation" className="text-gray-600">
-                        Resumé de la consultation:
-                        </label>
+                        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Medicaments
+          </label>
 
+          {/* Display selected medications */}
+          {/* <div className="border rounded p-2 mb-2">
+            {selectedMedications.length > 0 && (
+              <ul>
+                {selectedMedications.map((med, index) => (
+                  <li key={index}>
+                    <p>{med}</p>
+                    <input type="text" className="text" />
+                  </li>
 
-                        <textarea
-                           id="resumeConsultation"
-                           name="resumeConsultation"
-                           onChange={handleChange}
-                           required
-                           value={formData.resumeConsultation}
-                           className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                         ></textarea>
+                ))}
+              </ul>
+            ) }
+          </div> */}
 
-
-
-
-                       
-                      </div>
-
-                   
-
-                 
+          {/* Button to navigate to medication table */}
+          <button
+            type="button"
+            onClick={handleAddMedication}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Add Medication
+          </button>
+        </div>          
 {/* document */}
                       <div className="py-3 flex gap-x-4 items-center">
                         <label htmlFor="consultationDocuments" className="text-gray-600">
@@ -198,8 +188,7 @@ const CreateConsultTab = ({patient}) => {
                           className=" pr-12 pl-3 py-1.5 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                         />
                       </div>
-                    </div>
-                  </div>
+                 
 
                   {successMsg && (
                     <div className="text-green-500">{successMsg}</div>

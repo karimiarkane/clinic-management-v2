@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import {NextUIProvider} from "@nextui-org/react";
-
+import { NextUIProvider } from "@nextui-org/react";
+import { MedicationProvider } from "./context/MedicationContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,15 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
-    <body >
-    <NextUIProvider>
-
-      {children}
-      </NextUIProvider>
-
+      <body>
+        <NextUIProvider>
+          <MedicationProvider>{children}</MedicationProvider>
+        </NextUIProvider>
       </body>
-
     </html>
   );
 }

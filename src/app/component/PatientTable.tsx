@@ -5,22 +5,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useMedications } from "../context/MedicationContext";
 
 
 
 const PatientTable = ({ data }: { data: any }) => {
+  const {patientId , setPatientId} = useMedications();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
- 
-
-  const [successMsg , setSuccessMsg ] = useState("")
-  const [errorMsg , setErrorMsg ] = useState("")
-
-const router = useRouter()
+ const router = useRouter()
  
 interface Patient {
   _id: string;
@@ -41,13 +38,13 @@ interface Patient {
 
   useEffect(() => {
     const searchTerms = searchTerm.toLowerCase().split(' ').filter(term => term.trim() !== '');
-    console.log("searchTerms", searchTerms)
+    // console.log("searchTerms", searchTerms)
     const filtered = data.filter((patient : Patient)  => {
         const patientFullName = `${patient.nom.toLowerCase()} ${patient.prenom.toLowerCase()}`;
         return searchTerms.every(term => patientFullName.includes(term));
    } );
     setFilteredPatients(filtered);
-    console.log('filtered' , filtered);
+    // console.log('filtered' , filtered);
     setCurrentPage(1); // Reset to the first page after filtering
   }, [searchTerm, data]);
   
@@ -76,7 +73,16 @@ router.refresh()
       }
     }
   };
+  const handleConsulterClick = (patientId : String)=>{
+     setPatientId(patientId)
+     console.log("parientId of the context after selecting consulter ce patient ",patientId)
+  }
 
+  const hundlesearchChange = (e : any) => {
+    console.log("hundlesearchChange tbdlet ")
+    setSearchTerm(e.target.value);
+    console.log("searchTerm",searchTerm)
+  };
   return (
     <div 
      className=" max-w-screen-xl mx-auto px-4 md:px-8 py-2 text-[#02001b]  bg-white  "
@@ -96,7 +102,9 @@ router.refresh()
                     // className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
                     className="w-full py-3 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-[#f0f0f0] focus:bg-white focus:border-[#1e71b8]"
 
-                    onChange={(e)=>setSearchTerm(e.target.value)}
+                    // onChange={(e)=>setSearchTerm(e.target.value)}
+                    onChange={(e)=>hundlesearchChange(e)}
+
                 />
             </div>
         </form>
@@ -138,8 +146,10 @@ className="text-[#02001b] divide-y"
               
                   <Link href={`/Home/${item._id}`}>
                     <button 
+                    onClick={() => handleConsulterClick(item._id)}
                     // className="py-2 leading-none px-3 font-medium text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg"
                     className="py-2 leading-none px-3 font-medium text-[#1d3e8e] duration-150 hover:bg-[#edffec] rounded-lg">
+                    
                       consulter
                     </button>
                   </Link>

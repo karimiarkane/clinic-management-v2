@@ -4,7 +4,10 @@ const ConsultationSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   motif: String,
   resumeConsultation: String,
-  Medicaments : [String],
+  Medicaments : [{
+
+  }],
+  symptomes: String,
   Analyses : [String],
   consultationDocuments: {// les documents dyal l patients
     type: [String],

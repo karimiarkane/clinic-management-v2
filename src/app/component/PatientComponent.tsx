@@ -10,21 +10,19 @@ import InfoMedTab from "./InfoMedTab";
 import CreateConsultTab from "./CreateConsultTab";
 import CMHForm from "./CMHForm";
 
-
 import {
-  faArrowLeft,
   faHospitalUser,
   faFolder,
   faPersonCircleQuestion,
   faPersonCirclePlus,
   faNotesMedical,
-  faFileInvoice,
   faFileMedical,
   faFileWaveform,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useMedications } from "../context/MedicationContext";
 
 type PatientComponentProps = {
   patient: {
@@ -70,7 +68,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
   patient,
   consultation,
 }: PatientComponentProps) => {
-  const [selectedTab, setSelectedTab] = useState("Consultation");
+  // const [selectedTab, setSelectedTab] = useState("Consultation");
   const formData = {
     date: "2023-10-01",
     nom: "Doe",
@@ -168,12 +166,19 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
       ),
     },
   ];
-
-
+  const handleTabsClick = (tab : String)=>{
+    setActiveTab(tab)
+    console.log("active tab",activeTab)
+  }
+  const { setActiveTab, activeTab, patientId, selectedMedications } =
+    useMedications();
+  console.log("active tab", activeTab);
+  console.log("patientId", patientId);
+  console.log("selectedMedications", selectedMedications);
   return (
     <>
-    <div className="flex h-full  justify-between   ">
-         {/* <div className="NameAndReturn flex justify-around items-center">
+      <div className="flex h-full  justify-between   ">
+        {/* <div className="NameAndReturn flex justify-around items-center">
           
             <div>
               <Link href="/">
@@ -188,7 +193,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
               {patient.nom} {patient.prenom}
             </h2>
           </div>  */}
- <div
+        <div
           style={{ width: "23%" }}
           className="card  bg-white p-6 rounded-lg shadow-lg  border-solid border-2 h-full"
         >
@@ -205,7 +210,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
                 <div
                   key={index}
                   className="border-solid border-2 w-11/12 p-2 mt-1  flex items-center  cursor-pointer rounded-md bg-[#E3E5E6]"
-                  onClick={() => setSelectedTab(tab.key)}
+                  onClick={() => handleTabsClick(tab.key)}
                 >
                   {tab.icon}
                   {tab.title}
@@ -215,24 +220,24 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
           </div>
         </div>
         <div className="w-3/4 bg-white h-full    overflow-y-auto ">
-          {selectedTab == "Consultation" && (
+          {activeTab == "Consultation" && (
             <Consultation consultation={consultation} patient={patient} />
           )}
-          {selectedTab == "Nouvelle consult" && (
+          {activeTab == "Nouvelle consult" && (
             <CreateConsultTab patient={patient} />
           )}
-          {selectedTab == "Ordonnace" && <div>ordonnace</div>}
-          {selectedTab == "ScannerEtRadio" && <CMHForm formData={formData}/>}
-          {selectedTab == "Dossier Medicale" && (
+          {activeTab == "Ordonnace" && <div>ordonnace</div>}
+          {activeTab == "ScannerEtRadio" && <CMHForm formData={formData} />}
+          {activeTab == "Dossier Medicale" && (
             <DossierMedicalTab patient={patient} />
           )}
-          {selectedTab == "Information Personnelle" && (
+          {activeTab == "Information Personnelle" && (
             <InfoPersoTab patient={patient} />
           )}
-          {selectedTab == "Informations Medicales" && (
+          {activeTab == "Informations Medicales" && (
             <InfoMedTab patient={patient} />
           )}
-        </div>    
+        </div>
       </div>
     </>
   );
