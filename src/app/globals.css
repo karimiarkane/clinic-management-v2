@@ -3,3 +3,8 @@
 @tailwind utilities;
 
 
+body {
+  @apply bg-gradient-to-r from-blue-500 to-purple-500;
+}
+
+@layer base { img { display: initial; } }

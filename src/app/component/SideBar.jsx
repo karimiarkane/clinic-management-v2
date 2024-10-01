@@ -56,18 +56,6 @@ const SideBar = () => {
         {
     
             icon :  <FontAwesomeIcon
-            icon={faSyringe}
-            size="1x"
-            color="#1e71b8"
-            className="mr-2"
-          />,
-    
-          href: "/Home/Allergies",
-          name: "BDD Allergies",
-        },
-        {
-    
-            icon :  <FontAwesomeIcon
             icon={faQuestion}
             size="1x"
             color="#1e71b8"

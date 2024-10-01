@@ -46,9 +46,7 @@ export const POST = async (req: NextRequest ,  { params }: { params: { id: strin
     console.log("all files created")
     console.log("form data from the back " , formdata)
 
-    if(!formdata.get("resumeConsultation") || !formdata.get("motif")  ){
-      return NextResponse.json({status : 400 ,  message: "veuillez remplir tous les champs" })
-    }
+    
 
     try {
       const newConsultation = await Consultation.create({

@@ -9,6 +9,7 @@ import InfoPersoTab from "./InfoPersoTab";
 import InfoMedTab from "./InfoMedTab";
 import CreateConsultTab from "./CreateConsultTab";
 import CMHForm from "./CMHForm";
+import CMHForm2 from "./CMHForm2";
 
 import {
   faHospitalUser,
@@ -178,21 +179,6 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
   return (
     <>
       <div className="flex h-full  justify-between   ">
-        {/* <div className="NameAndReturn flex justify-around items-center">
-          
-            <div>
-              <Link href="/">
-                <FontAwesomeIcon
-                  size="2x"
-                  color="#1e71b8"
-                  icon={faArrowLeft}
-                />
-              </Link>
-            </div>
-            <h2 className="text-center text-lg font-ethnocentric p-5">
-              {patient.nom} {patient.prenom}
-            </h2>
-          </div>  */}
         <div
           style={{ width: "23%" }}
           className="card  bg-white p-6 rounded-lg shadow-lg  border-solid border-2 h-full"
@@ -226,7 +212,7 @@ const PatientComponent: React.FC<PatientComponentProps> = ({
           {activeTab == "Nouvelle consult" && (
             <CreateConsultTab patient={patient} />
           )}
-          {activeTab == "Ordonnace" && <div>ordonnace</div>}
+          {activeTab == "Ordonnace" && <CMHForm2 patient={patient}  />}
           {activeTab == "ScannerEtRadio" && <CMHForm formData={formData} />}
           {activeTab == "Dossier Medicale" && (
             <DossierMedicalTab patient={patient} />

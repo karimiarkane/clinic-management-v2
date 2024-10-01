@@ -9,7 +9,7 @@ export  const  GET = async ()=> {
    const medicaments = await Medicament.find({})
    console.log('medicaments in the backend' , medicaments)
  if(!medicaments || medicaments.length === 0) {  
-  return NextResponse.json({ medicaments : medicaments  , status: 404 , message: "aucun medicament trouvé" });
+  return NextResponse.json({  status: 404 , message: "aucun medicament trouvé" });
  }  
     return NextResponse.json({ medicaments , status:200 , message: "medicaments trouvés" });
   

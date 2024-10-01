@@ -1,7 +1,7 @@
 // /* eslint-disable react-hooks/exhaustive-deps */
 // // MedicationTable.js
-"use client";
-import { useState, useEffect } from "react";
+'use client'
+import { useState , useEffect } from 'react';
 
 import {
   Modal,
@@ -12,8 +12,9 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { useMedications } from "../context/MedicationContext";
-import { useRouter } from "next/navigation";
+import { useMedications } from '../context/MedicationContext';
+import { useRouter } from 'next/navigation';
+
 
 // const medications = [
 //   // Exemple de données. En réalité, cela proviendra d'une base de données ou API
@@ -23,61 +24,41 @@ import { useRouter } from "next/navigation";
 // ];
 // const form =[ "Analgésique" , "Comprimé" , "Injection" ,"applicable"]
 // const classMedicament=["Antibiotique" , "Analgésique" , "Antiviral" ]
-export default function MedicationTable({ medicaments }) {
+export default function TableAnalyse({analyses}) {
   const router = useRouter();
-  const { selectedMedications, setSelectedMedications, currentPatient } =
-    useMedications();
+  const {setSelectedAnalyse,  selectedAnalyse , selectedMedications , setSelectedMedications ,currentPatient} = useMedications() 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredMedications, setFilteredMedications] = useState(medicaments);
-  const [formData, setFormData] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredAnalyse , setFilteredAnalyse] = useState(analyses)
+  const [formData, setFormData] = useState()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  // const [currentItems, setCurrentItems] = useState()
-  
-  //    const [selectedClass, setSelectedClass] = useState('');
-  // const [selectedForm, setSelectedForm] = useState('');
-
-
-  // useEffect(() => {
-  //   const searchTerms = searchTerm.toLowerCase().split(' ').filter(term => term.trim() !== '');
-  //   // console.log("searchTerms", searchTerms)
-  //   const filtered = data.filter((patient : Patient)  => {
-  //       const patientFullName = `${patient.nom.toLowerCase()} ${patient.prenom.toLowerCase()}`;
-  //       return searchTerms.every(term => patientFullName.includes(term));
-  //  } );
-  //   setFilteredPatients(filtered);
-  //   // console.log('filtered' , filtered);
-  //   setCurrentPage(1); // Reset to the first page after filtering
-  // }, [searchTerm, data]);
-  
-
-
-
-
-
+  //   // const [selectedClass, setSelectedClass] = useState('');
+  // // const [selectedForm, setSelectedForm] = useState('');
+ 
 
 
   useEffect(() => {
     const searchTerms = searchTerm.toLowerCase().split(' ').filter(term => term.trim() !== '');
-    // return searchTerms.every(term => patientFullName.includes(term))
-    const filteredMedications = medicaments.filter((med) => {
-      return searchTerms.every(term =>  med.DENOMINATION_COMMUNE_INTERNATIONALE.toLowerCase().includes(term));
-    });
-    setFilteredMedications(filteredMedications);
+
+    const filteredAnalyse = analyses.filter((anal)  => {
+
+      return searchTerms.every(term =>   anal.nom.toLowerCase().includes(term));
+
+
+   } );
+   setFilteredAnalyse(filteredAnalyse);
     // console.log('filtered' , filtered);
     setCurrentPage(1); // Reset to the first page after filtering
-    
-  }, [searchTerm, medicaments]);
-
-  useEffect(() => {
-    setFilteredMedications(medicaments);
-  }, [medicaments]);
+  }, [searchTerm, analyses]);
+useEffect(() => {
+  setFilteredAnalyse(analyses);
+}, [analyses]);
 
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
-  const currentItems = filteredMedications.slice(firstItemIndex, lastItemIndex);
-  const totalPages = Math.ceil(filteredMedications.length / itemsPerPage);
+  const currentItems = filteredAnalyse.slice(firstItemIndex, lastItemIndex);
+  const totalPages = Math.ceil(filteredAnalyse.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -91,36 +72,26 @@ export default function MedicationTable({ medicaments }) {
     }
   };
 
-  const handleSelect = (med) => {
-    if (
-      selectedMedications.some(
-        (selected) => selected.medication._id === med._id
-      )
-    ) {
-      setSelectedMedications(
-        selectedMedications.filter(
-          (selected) => selected.medication._id !== med._id
-        )
-      );
+  const handleSelect = (anal) => {
+    if (selectedAnalyse.some(selected => selected._id === anal._id)) {
+      setSelectedAnalyse(selectedAnalyse.filter(selected => selected_id !== anal._id));
     } else {
-      setSelectedMedications([
-        ...selectedMedications,
-        { medication: med, consumption: "" },
-      ]);
+      setSelectedAnalyse([...selectedAnalyse, anal]);
     }
   };
 
-  const handleSubmitNewMed = () => {
+  const  handleSubmitNewMed = ()=>{
     // Ajouter le nouveau médicament à la liste et fermer la modal
-    console.log("submit new medication");
+    console.log("submit new medication")
     // const newMedication = { name: 'Nouveau médicament', class: 'Nouvelle catégorie', form: 'Nouvelle formulation', price: 'Nouveau prix' };
     // setMedicaments([...medicaments, newMedication]);
     onClose();
-  };
-  const handleConfirmSelectionClick = () => {
-    console.log("selected medication", selectedMedications);
-    router.push(`/Home/${currentPatient._id}`);
-  };
+  }
+  const handleConfirmSelectionClick = ()=>{
+console.log("selected analyse" , selectedMedications)
+router.push(`/Home/${currentPatient._id}`)
+  }
+
 
   return (
     <div className="p-4 bg-white">
@@ -134,7 +105,7 @@ export default function MedicationTable({ medicaments }) {
       />
       {/* add button  */}
       <>
-        {/* <Button className="py-2 px-4 font-medium text-white bg-[#1e71b8]  rounded-full" onPress={onOpen}>Ajouter un medicament</Button>
+      {/* <Button className="py-2 px-4 font-medium text-white bg-[#1e71b8]  rounded-full" onPress={onOpen}>Ajouter un medicament</Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
@@ -221,13 +192,8 @@ export default function MedicationTable({ medicaments }) {
           )}
         </ModalContent>
       </Modal> */}
-      </>
-      <Button
-        onPress={handleConfirmSelectionClick}
-        onClick={handleConfirmSelectionClick}
-      >
-        confirmer
-      </Button>
+    </>
+    <Button onPress={handleConfirmSelectionClick} onClick={handleConfirmSelectionClick}>confirmer</Button>
 
       {/* Filtres */}
       <div className="mb-4 flex space-x-4">
@@ -241,9 +207,9 @@ export default function MedicationTable({ medicaments }) {
             <option key={index} value={classe}>{classe}</option>
           ))}
            Ajoute plus de classes ici 
-        </select> 
+        </select> */}
 
-         <select
+        {/* <select
           className="p-2 border rounded-md"
           value={selectedForm}
           onChange={(e) => setSelectedForm(e.target.value)}
@@ -254,38 +220,33 @@ export default function MedicationTable({ medicaments }) {
             ))}
         
         </select> */}
-        {/* Filtres */}
       </div>
 
       {/* Tableau des médicaments */}
       <table className="min-w-full bg-white">
         <thead>
           <tr>
-            <th className="py-2">Sélection</th>
-            <th className="py-2">DCI</th>
-            <th className="py-2">Marque</th>
+          <th className="py-2">Sélection</th>
+            <th className="py-2">nom</th>
+            {/* <th className="py-2">Marque</th>
             <th className="py-2">FORME</th>
-            <th className="py-2">DOSAGE</th>
+            <th className="py-2">DOSAGE</th> */}
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((med, index) => (
+          {currentItems.map((anal, index) => (
             <tr key={index} className="text-center ">
-              <td className="py-2 cursor-pointer">
+                  <td className="py-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={selectedMedications.some(
-                    (selected) => selected.medication._id === med._id
-                  )}
-                  onChange={() => handleSelect(med)}
+                  checked={selectedAnalyse.some(selected => selected._id === anal._id)}
+                  onChange={() => handleSelect(anal)}
                 />
               </td>
-              <td className="py-2">
-                {med.DENOMINATION_COMMUNE_INTERNATIONALE}
-              </td>
-              <td className="py-2">{med.NOM_DE_MARQUE}</td>
+              <td className="py-2">{anal.nom}</td>
+              {/* <td className="py-2">{med.NOM_DE_MARQUE}</td>
               <td className="py-2">{med.FORME}</td>
-              <td className="py-2">{med.DOSAGE}</td>
+              <td className="py-2">{med.DOSAGE}</td> */}
             </tr>
           ))}
         </tbody>
@@ -299,5 +260,10 @@ export default function MedicationTable({ medicaments }) {
         </Button>
       </div>
     </div>
-  );
-}
+)}
+
+
+
+
+
+

@@ -11,7 +11,10 @@ export default function ShowDocumentModal({fileName} : {fileName : string}) {
 
   return (
     <>
-      <Button onPress={onOpen} className="w-4/5 text-left bg-[#1d3e8e] text-white">{OnlyfileNameWithoutExtension}</Button>
+      <Button onPress={onOpen} 
+      // className="w-4/5 text-left bg-[#1d3e8e] text-white"
+      className="  bg-white"
+      >{OnlyfileNameWithoutExtension}</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="full">
         <ModalContent>
           {(onClose) => (

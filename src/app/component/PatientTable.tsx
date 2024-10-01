@@ -10,7 +10,7 @@ import { useMedications } from "../context/MedicationContext";
 
 
 const PatientTable = ({ data }: { data: any }) => {
-  const {patientId , setPatientId} = useMedications();
+  const {currentPatient , setCurrentPatient} = useMedications();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,9 +73,9 @@ router.refresh()
       }
     }
   };
-  const handleConsulterClick = (patientId : String)=>{
-     setPatientId(patientId)
-     console.log("parientId of the context after selecting consulter ce patient ",patientId)
+  const handleConsulterClick = (patient : any)=>{
+    setCurrentPatient(patient)
+     console.log("parientId of the context after selecting consulter ce patient ",patient._id)
   }
 
   const hundlesearchChange = (e : any) => {
@@ -146,7 +146,7 @@ className="text-[#02001b] divide-y"
               
                   <Link href={`/Home/${item._id}`}>
                     <button 
-                    onClick={() => handleConsulterClick(item._id)}
+                    onClick={() => handleConsulterClick(item)}
                     // className="py-2 leading-none px-3 font-medium text-indigo-600 duration-150 hover:bg-gray-50 rounded-lg"
                     className="py-2 leading-none px-3 font-medium text-[#1d3e8e] duration-150 hover:bg-[#edffec] rounded-lg">
                     

@@ -1,230 +1,335 @@
-'use client'
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import { useMedications } from '../context/MedicationContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
+"use client";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useMedications } from "../context/MedicationContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX, faPlus } from "@fortawesome/free-solid-svg-icons";
+
+const CreateConsultTab = ({ patient }) => {
+  const {
+    selectedMedications,
+    setSelectedMedications,
+    setCurrentPatient,
+    currentPatient,
+    setSelectedAnalyse,
+    selectedAnalyse,
+    setConsultationDetails,
+    consultationDetails
+  } = useMedications();
+  const [disableButton, setDisableButton] = useState(false);
+  const router = useRouter();
+  const [errMsg, setErrMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  // const [formData, setFormData] = useState({
+  //   motif: "",
+  //   resumeConsultation: "",
+  //   symptomes: "",
+  //   consultationDocuments: [],
+  //   Medicaments: [],
+  //   Analyses: [],
+  // });
+  const handleChange = (e) => {
+    const { name, value } = e.currentTarget;
+    setConsultationDetails((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const handleFileChange = (e) => {
+    // Assuming you're using the same state structure
+    const { name, files } = e.currentTarget;
+    const selectedfilesUrls = [];
+    const selectedfiles = Array.from(files); // convert files object to an array of fileq
+    for (let i = 0; i < selectedfiles.length; i++) {
+      const file = files[i];
+      const fileUrl = URL.createObjectURL(file); // to show it in the front before applading
+      selectedfilesUrls.push(fileUrl);
+    }
+    console.log("selectedfilesUrls : ", selectedfilesUrls);
+    setConsultationDetails((prevState) => ({
+      ...prevState,
+      [name]: selectedfiles,
+    }));
+  };
 
 
-const CreateConsultTab = ({patient}) => {
-  
-  const { selectedMedications ,setSelectedMedications } = useMedications();
-    const [disableButton , setDisableButton] = useState(false)
-    const router = useRouter()
-    const [errMsg, setErrMsg] = useState("");
-    const [successMsg, setSuccessMsg] = useState(""); 
-    const [formData, setFormData] = useState({
-      motif: "",
-      resumeConsultation: "",
-      consultationDocuments: [],
-      Medicaments: [], 
-      Analyses: [],
-    });
-    const handleChange = (e) => {
-      const { name, value } = e.currentTarget;
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    };
-    const handleFileChange = (e) => {
-      // Assuming you're using the same state structure
-      const { name, files } = e.currentTarget;
-      const selectedfilesUrls = [];
-      const selectedfiles = Array.from(files); // convert files object to an array of fileq
-      for (let i = 0; i < selectedfiles.length; i++) {
-        const file = files[i];
-        const fileUrl = URL.createObjectURL(file); // to show it in the front before applading
-        selectedfilesUrls.push(fileUrl);
-      }
-      console.log("selectedfilesUrls : ", selectedfilesUrls);
-      setFormData((prevState) => ({
-        ...prevState,
-        [name]: selectedfiles,
-      }));
-    };  
+  useEffect(() => {
+    setSuccessMsg("");
+    setErrMsg("");
+    setDisableButton(false);
+  }, []);
 
-    useEffect(() => {
-    
-   console.log("selectedMedications : ", selectedMedications);
-    
-  }, [selectedMedications]);
+  const handleSubmit = async (e) => {
+    setDisableButton(true);
+    if (disableButton) return;
+    setErrMsg("");
+    setSuccessMsg("");
+    e.preventDefault();
+    console.log("formData mojamaa : ", consultationDetails);
+    const formDataToSend = new FormData();
 
+    formDataToSend.append("motif", consultationDetails.motif);
+    formDataToSend.append("resumeConsultation", consultationDetails.resumeConsultation);
+    formDataToSend.append("symptomes", consultationDetails.symptomes);
+    formDataToSend.append("Medicaments", JSON.stringify(selectedMedications));
+    formDataToSend.append("Analyses", JSON.stringify(selectedAnalyse));
 
-    useEffect(() => {
-    
-        setSuccessMsg("");
-        setErrMsg("");
-        setDisableButton(false)
-      
-    }, []);
-  
-    const handleSubmit = async (e) => {
-      setDisableButton(true)
-      if(disableButton) return
-      setErrMsg("");
-      setSuccessMsg("");
-      e.preventDefault();
-      console.log("formData mojamaa : ", formData);
-      const formDataToSend = new FormData();
-  
-      formDataToSend.append("motif", formData.motif);
-      formDataToSend.append("resumeConsultation", formData.resumeConsultation);
-      formDataToSend.append("Medicaments", JSON.stringify(formData.Medicaments));
-      formDataToSend.append("Analyses", JSON.stringify(formData.Analyses));
-     
-      if (
-        formData.consultationDocuments &&
-        formData.consultationDocuments.length
-      ) {
-        formData.consultationDocuments.forEach((file) => {
-          formDataToSend.append("consultationDocuments", file);
-        });
-      }
-  
-      console.log("formDataToSend : ");
-      for (let [key, value] of formDataToSend.entries()) {
-        console.log(key, value);
-      }
-      try {
-        const res = await fetch(`http://localhost:3000/api/patient/${patient._id}/consultation`, {
+    if (
+      consultationDetails.consultationDocuments &&
+      consultationDetails.consultationDocuments.length
+    ) {
+      consultationDetails.consultationDocuments.forEach((file) => {
+        formDataToSend.append("consultationDocuments", file);
+      });
+    }
+
+    console.log("formDataToSend : ");
+    for (let [key, value] of formDataToSend.entries()) {
+      console.log(key, value);
+    }
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/patient/${patient._id}/consultation`,
+        {
           method: "POST",
           body: formDataToSend,
-        });
-        const resback = await res.json();
-        console.log("res from the back in the front", resback);
-        if (resback.status != 200) {
-          setErrMsg(resback.message);
-        } else {
-          setSuccessMsg(resback.message);
-          setFormData({
-              motif: "",
-      resumeConsultation: "",
-      consultationDocuments: [],
-      Medicaments: [],
-      Analyses: [],
-  
-          });
-          router.refresh();
         }
-      } catch (error) {
-        console.error("error fetch front", error);
-        setErrMsg(error.message);
+      );
+      const resback = await res.json();
+      console.log("res from the back in the front", resback);
+      if (resback.status != 200) {
+        setErrMsg(resback.message);
+        router.refresh()
+      } else {
+        setSuccessMsg(resback.message);
+        setConsultationDetails({
+          motif: "",
+    resumeConsultation: "",
+    symptomes: "",
+    consultationDocuments: [],
+        });
+        router.refresh();
       }
-      // setErrMsg("")
-      // setSuccessMsg("")
-  
-      
-    };
-    const handleAddMedication = () => {
-      // Navigate to the medication selection route
-      router.push('/Home/Medicaments');
-    };
-
-    const handleMedDeliteClick  = (med)=>{
-      setSelectedMedications(selectedMedications.filter((med) => med._id!== med._id));
+    } catch (error) {
+      console.error("error fetch front", error);
+      setErrMsg(error.message);
     }
+    // setErrMsg("")
+    // setSuccessMsg("")
+  };
+  const handleAddMedication = () => {
+    setCurrentPatient(patient);
+    // Navigate to the medication selection route
+
+    router.push("/Home/Medicaments");
+  };
+  const handleAddAnalyse = () => {
+    setCurrentPatient(patient);
+    // Navigate to the medication selection route
+
+    router.push("/Home/Analyse");
+  };
+
+  const handleDeliteOneSelectedMedication = (medId) => {
+    setSelectedMedications((prevState) =>
+      prevState.filter((med) => med.medication._id !== medId)
+    );
+    console.log("selectedmedication", setSelectedMedications);
+  };
+
+  
+  const handleDeliteOneSelectedAnal = (analId) => {
+    setSelectedAnalyse((prevState) =>
+      prevState.filter((anal) => anal._id !== analId)
+    );
+  };
+  
+  const handleInputConsumptionChange = (medId, value) => {
+    console.log("input change");
+    setSelectedMedications((prevState) =>
+      prevState.map((med) =>
+        med.medication._id === medId ? { ...med, consumption: value } : med
+      )
+    );
+  };
   return (
-
-<>
-<form id="myform" className='border-solid border-4 border-green-700 p-2' onSubmit={handleSubmit}>
-                
-                      <div className="">
-                        <label htmlFor="motif" className=" text-gray-700 font-bold">
-                          Motif :
-                        </label>
-                        <textarea
-                           id="motif"
-                           name="motif"
-                           onChange={handleChange}
-                           required
-                           value={formData.motif}
-                           className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
-                         ></textarea>           
-                      </div>
-                      <div className="">
-                        <label htmlFor="resumeConsultation" className="text-gray-700 font-bold">
-                        Resumé de la consultation:
-                        </label>
-                        <textarea
-                           id="resumeConsultation"
-                           name="resumeConsultation"
-                           onChange={handleChange}
-                           required
-                           value={formData.resumeConsultation}
-                           className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                         ></textarea>
-
-
-
-
-                       
-                      </div>
-                        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Medicaments
+    <>
+      <form id="myform" className=" p-2" onSubmit={handleSubmit}>
+        <div className="motif">
+          <label htmlFor="motif" className=" text-gray-700 font-bold">
+            Motif :
           </label>
-          {selectedMedications.map((med, index) =>{
-            return (
-            
-            <div key={index}>
-              <FontAwesomeIcon icon={faX}  onClick={handleMedDeliteClick(med)} />
-              <p >{med.NOM_DE_MARQUE}</p>
-              <input type="text" className="text" />
-            </div>
-          )
-          })}
-
-          {/* Display selected medications */}
-          {/* <div className="border rounded p-2 mb-2">
-            {selectedMedications.length > 0 && (
-              <ul>
-                {selectedMedications.map((med, index) => (
-                  <li key={index}>
-                    <p>{med}</p>
-                    <input type="text" className="text" />
-                  </li>
-
-                ))}
-              </ul>
-            ) }
-          </div> */}
-
-          {/* Button to navigate to medication table */}
-          <button
-            type="button"
-            onClick={handleAddMedication}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          <textarea
+            id="motif"
+            name="motif"
+            onChange={handleChange}
+            value={consultationDetails.motif}
+            className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 "
+          ></textarea>
+        </div>
+        <div className="symptomes">
+          <label htmlFor="symptomes" className="text-gray-700 font-bold ">
+            Symptomes :
+          </label>
+          <textarea
+            id="symptomes"
+            name="symptomes"
+            onChange={handleChange}
+            value={consultationDetails.symptomes}
+            className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          ></textarea>
+        </div>
+        <div className="resume">
+          <label
+            htmlFor="resumeConsultation"
+            className="text-gray-700 font-bold "
           >
-            Add Medication
-          </button>
-        </div>          
-{/* document */}
-                      <div className="py-3 flex gap-x-4 items-center">
-                        <label htmlFor="consultationDocuments" className="text-gray-600">
-                          Dossier de Consultation :
-                        </label>
-                        <input
-                          type="file"
-                          name="consultationDocuments"
-                          onChange={handleFileChange}
-                          multiple
-                          id="consultationDocuments"
-                          className=" pr-12 pl-3 py-1.5 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-                        />
-                      </div>
-                 
+            Resumé de la consultation:
+          </label>
+          <textarea
+            id="resumeConsultation"
+            name="resumeConsultation"
+            onChange={handleChange}
+            value={consultationDetails.resumeConsultation}
+            className="block w-full rounded-md border-0 p-1.5 m-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          ></textarea>
+        </div>
 
-                  {successMsg && (
-                    <div className="text-green-500">{successMsg}</div>
-                  )}
-                  {errMsg && <div className="text-red-500">{errMsg}</div>}
-                </form>
-                <button form="myform" type="submit" disabled={disableButton}  className="px-4 py-2 text-blue-700 rounded-2xlP   duration-150 hover:text-white hover:bg-indigo-500 active:bg-indigo-700">
-                  Ajouter
-                </button>
-                
-</>  )
-}
+        <div className="medicament">
+          <div className="">
+            <label className="text-gray-700 font-bold">Medicaments :</label>
+            <button
+              type="button"
+              onClick={handleAddMedication}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1.5 m-2 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FontAwesomeIcon icon={faPlus} className="mx-2" />
+              ajouter medicament
+            </button>
+          </div>
+          {selectedMedications.map((med, index) => (
+            <div
+              key={med.medication._id}
+              className="flex items-start mb-2 p-1 bg-gray-100 rounded-lg shadow-sm"
+            >
+              <FontAwesomeIcon
+                icon={faX}
+                onClick={() =>
+                  handleDeliteOneSelectedMedication(med.medication._id)
+                }
+                className="cursor-pointer mr-2 text-red-600 border-solid border-4 p-1"
+              />
+              <div className="flex-1">
+                <label
+                  className="block text-gray-800 font-medium mb-1"
+                  htmlFor={med.medication._id}
+                >
+                  {med.medication.NOM_DE_MARQUE}
+                </label>
+                <textarea
+                  id={med.medication._id}
+                  value={med.consumption || ""}
+                  onChange={(e) =>
+                    handleInputConsumptionChange(
+                      med.medication._id,
+                      e.target.value
+                    )
+                  }
+                  placeholder="Detaille de consommation"
+                  className="block w-full rounded-md border-0 p-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="analyse">
+          <div className="">
+            <label className="text-gray-700 font-bold">Analyse :</label>
+            <button
+              type="button"
+              onClick={handleAddAnalyse}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-1.5 m-2 rounded focus:outline-none focus:shadow-outline"
+            >
+              <FontAwesomeIcon icon={faPlus} className="mx-2" />
+              ajouter analyse
+            </button>
+          </div>
+          {selectedAnalyse.map((anal, index) => (
+            <div
+              key={anal._id}
+              className="flex items-start mb-2 p-1 bg-gray-100 rounded-lg shadow-sm"
+            >
+              <FontAwesomeIcon
+                icon={faX}
+                onClick={() => handleDeliteOneSelectedAnal(anal._id)}
+                className="cursor-pointer mr-2 text-red-600 border-solid border-4 p-1"
+              />
+              <div className="flex-1">
+                <label
+                  className="block text-gray-800 font-medium mb-1"
+                  htmlFor={anal._id}
+                >
+                  {anal.nom}
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="dossierDeConsultation">
+          <label
+            htmlFor="consultationDocuments"
+            className="text-gray-700 font-bold "
+          >
+            Dossier de Consultation :
+          </label>
 
-export default CreateConsultTab
+          <div class="flex items-center justify-around m-2">
+            <label class="flex flex-col items-center px-2 py-4  bg-blue-500 text-white rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-600">
+              <FontAwesomeIcon icon={faPlus} />
+              <span class="mt-2 text-base leading-normal">
+                importer les fichiers
+              </span>
+              <input
+                type="file"
+                name="consultationDocuments"
+                onChange={handleFileChange}
+                multiple
+                id="consultationDocuments"
+                className="hidden pr-12 pl-3 py-1.5 text-gray-500 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-indigo-600"
+              />{" "}
+            </label>
+            {/* {formData.consultationDocuments.map((file, index) => (
+    <span key={index} id="fileName" className="ml-4 text-gray-600">{file.name}</span>
+
+    ))} */}
+            <ul className="mt-4 w-full max-w-md p-4">
+              {consultationDetails.consultationDocuments.map((file, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center p-2 bg-gray-100 rounded-lg mb-2 shadow-sm text-gray-700"
+                >
+                  {file.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {successMsg && <div className="text-green-500">{successMsg}</div>}
+        {errMsg && <div className="text-red-500">{errMsg}</div>}
+      </form>
+      <div className="border-2 border-solid flex justify-end">
+        <button
+          form="myform"
+          type="submit"
+          disabled={disableButton}
+          className=" px-4 py-2  rounded-2xlP m-3 text-white bg-blue-700"
+        >
+          Ajouter
+        </button>
+      </div>
+    </>
+  );
+};
+
+export default CreateConsultTab;

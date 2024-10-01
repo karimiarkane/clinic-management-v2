@@ -20,7 +20,7 @@ export default function RootLayout({
        overflow-y-auto ">
         {/* Patient Table with a card-like container */}
         <div className="mnabdaretourarriere3onwanwelcontent  h-full  ">
-          <div style={{height : "10%"}}>3fsa hna</div>
+          <div style={{height : "10%"}}></div>
           <div style={{height : "90%"}} className="maincontent shadow-lg rounded-lg">
             {children}
           </div>
